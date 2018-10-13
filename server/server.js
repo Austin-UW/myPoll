@@ -1,32 +1,20 @@
 const express = require('express')
-const mongoose = require('mongoose')
-const logger = require('morgan')
-app.use(logger('dev'))
-mongoose.connect(
-  'mongodb://root:cokay101@ds127843.mlab.com:27843/hackermen',
-  { useNewUrlParser: true }
-)
-const schema = mongoose.Schema({
-  stuff: [Number]
-})
-const Stuff = mongoose.model('Stuff', schema)
-
 const app = express()
 
-app.get('/state', (req, res) => {
-  // is good
-  Stuff.create({ stuff: [0, 1, 2] }, (err) => {
-    if (err) { console.log(err) }
-  })
-  Stuff.find({}, (err, data) => {
-    console.log(data[0].stuff)
-    res.json(data[0].stuff)
-    if (err) {
-      throw err
-    }
+app.get('/', (req, res) => {
+  res.json({name: 'hi man, good job koddo'})
+})
+// NOTE: must put middlewares in order
+app.use((req, res, next) => {
+  const err = new Error('OOPSIE, NOT FOUND')
+  err.status = 404
+
+  next(err)
+})
+app.use((err, req, res) => {
+  res.status(err.status | 500).json({
+    err: err.message || 'something went VERY wrong, you are screwed man oops'
   })
 })
-
-
-
-app.listen(5555)
+const PORT = 1234
+app.listen(PORT, console.log(`Nicely dont kiddo, ${PORT}`))
