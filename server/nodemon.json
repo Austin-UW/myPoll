@@ -1,8 +1,10 @@
 {
   "watch": [
+    "/handlers/",
+    "/middlewares/",
     "/server.js",
-    "/model.js",
-    "/router.js",
+    "/models/",
+    "/routes/",
     "/package.json"
   ],
   "ext": "ts, js, jsx, tsx, json"

@@ -1,20 +1,22 @@
-const express = require('express')
+const errors = require('./handlers/index').errors
+const router = require('./routes/index')
+
 require('dotenv').config()
+
+const express = require('express')
 const cors = require('cors')
-const handlers = require('./handlers/index')
-const bodyParser = require('body-parser').json // only use json parser
-const db = require('./models/index')
+const bodyParser = require('body-parser') // only use json parser
+
 const app = express()
 
-app.get('/', (req, res) => {
-  res.json({ name: 'hi man, good job koddo' })
-})
+app.use(cors())
+app.use(bodyParser.json())
+app.use(errors)
+
+app.get('/', (req, res) => res.json({ name: 'hi man, good job koddo' }))
+app.use('/api/auth', router.auth)
 
 // NOTE: must put middlewares in order
-app.use(cors())
-app.use(bodyParser)
-app.use(handlers.notFound) // passes error status code to handlers.errors
-app.use(handlers.errors)
 
 const PORT = process.env.PORT
 app.listen(PORT, console.log(`Nicely dont kiddo, ${PORT}`))
