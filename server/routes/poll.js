@@ -1,5 +1,7 @@
 const router = require('express').Router()
-const showPolls = require('../handlers').showPolls
-router.route('/').get(showPolls) // show everything
+const handler = require('../handlers')
+router.route('/')
+  .get(handler.showPolls) // show everything
+  .post(handler.createPoll)
 
-module.exports = router
+module.exports = router  
