@@ -25,19 +25,20 @@ const userSchema = new mongoose.Schema({
 // NOTE: arrow functions auto bind this keyword to object and this will not refer to global
 userSchema.pre('save', async function (next) {
   try {
-    console.log(this) // consoles the users name that we are saving
-    // if we send in a different password
+    // if all is well
     if (!this.isModified('password')) {
       return next()
     }
-    // if the password is not different from what?
+    // if the password is different
     else {
-      // change user password to
+      // change user password to a big boy password
       console.log('else')
       const hashed = await bcrypt.hash(this.password, 15)
       this.password = hashed
     }
-  } catch (err) {
+  }
+  catch (err) {
+    // call error handlers, but which one?
     return next(err)
   }
 })
@@ -45,7 +46,8 @@ userSchema.methods.comparePassword = async function (attempt, next) {
   try {
     // this.password is current password being stored, returns boolean.
     return await bcrypt.compare(attempt, this.password)
-  } catch (err) {
+  }
+  catch (err) {
     next(err)
   }
 }

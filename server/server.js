@@ -11,12 +11,19 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(errors)
+app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => res.json({ name: 'hi man, good job koddo' }))
+app.get('/hi', router.base)
 app.use('/api/auth', router.auth)
 
-// NOTE: must put middlewares in order
+app.use((req, res, next) => {
+  let err = new Error('Not Found')
+  err.status = 404
+  next(err)
+})
+
+app.use(errors) // i dunno about this one :P
+
 
 const PORT = process.env.PORT
 app.listen(PORT, console.log(`Nicely dont kiddo, ${PORT}`))
