@@ -29,10 +29,7 @@ const polls = [
 
 const seed = async () => {
   await db.User.remove()
-  console.log('DROP ALL USERS')
-
   await db.Poll.remove()
-  console.log('DROP ALL POLLS')
 
   await Promise.all(
     users.map(async user => {
@@ -40,20 +37,21 @@ const seed = async () => {
       await data.save()
     })
   )
-  console.log('CREATED USERS', JSON.stringify(users))
 
   await Promise.all(
     polls.map(async poll => {
-      poll.options = poll.options.map(option => ({ option, votes: 0 }))
+      poll.options = poll.options.map((option) => ({
+        name: option, votes: 0
+      }))
+      console.log(poll.options)
       const data = await db.Poll.create(poll)
       const user = await db.User.findOne({ username: 'username' })
       data.user = user
-      user.polls.push(data._id)
+      user.polls.push(data._id) // just pushes the id of the poll so we can access later
       await user.save()
       await data.save()
     })
   )
-  console.log('CREATED POLLS', JSON.stringify(polls))
 }
 
 seed()

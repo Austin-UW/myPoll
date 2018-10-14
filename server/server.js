@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/hi', router.base)
 app.use('/api/auth', router.auth)
-
+app.use('/api/polls', router.poll)
 app.use((req, res, next) => {
   let err = new Error('Not Found')
   err.status = 404

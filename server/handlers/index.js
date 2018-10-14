@@ -1,5 +1,6 @@
 module.exports = {
-  ...require('./auth')
+  ...require('./auth'),
+  ...require('./poll')
 }
 /* tslint:disable */
 /* eslint-disable */
