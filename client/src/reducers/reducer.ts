@@ -12,14 +12,6 @@ export const reducer = (state: State, action: Action) => {
         ...state,
         snackbar: { ...state.snackbar, open: false }
       }
-
-    case 'GET_STATE_RESPONCE':
-      return {
-        ...action.state,
-        isLoading: false,
-        snackbar: { open: true, message: 'SERBER STATE GOTTEN', variant: 'success' },
-        money: 100
-      }
     // this probably should be done in the saga but same thing?
     default:
       return state

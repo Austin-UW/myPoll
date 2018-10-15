@@ -119,7 +119,7 @@ exports.deletePoll = async (req, res, next) => {
     }
     await poll.remove()
     await user.save()
-    res.status(200).json(poll) // send back deleted poll
+    res.status(200).json({ poll, deleted: true }) // send back deleted poll
   }
   catch (err) {
     err.status = 400

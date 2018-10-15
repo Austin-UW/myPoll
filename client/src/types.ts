@@ -1,18 +1,29 @@
 export type Variant = 'success' | 'warning' | 'error'
+
 export type Snackbar = {
-  open: false;
-  message: string;
-  variant: Variant;
+  open: false
+  message: string
+  variant: Variant
 }
+export type Option = {
+  name: string,
+  votes: number
+}
+export type Options = Option[]
+export type Poll = {
+  question: string
+  votes: number
+  options: Options
+  user: string /** @todo check if this should be number when sent to react thanks */
+}
+export type Polls = Poll[]
+
 export type State = Readonly<{
-  money: number;
-  snackbar: Snackbar;
-  isLoading: any;
-  stuff: number[];
+  snackbar: Snackbar
+  authenticated: boolean
+  isLoading: boolean
+  polls: Polls
 }>
 // used in api.ts
 export type Action = Readonly<{ type: 'OPEN_SNACKBAR'; message: string; variant: Variant }
-  | { type: 'CLOSE_SNACKBAR' }
-
-  | { type: 'GET_STATE_REQUEST' }
-  | { type: 'GET_STATE_RESPONCE'; state: State }>
+  | { type: 'CLOSE_SNACKBAR' }>

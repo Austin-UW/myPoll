@@ -1,61 +1,57 @@
 import * as React from 'react'
 import { getStylesHeader } from '../exports'
 import { State } from '../types'
-import { AppBar, withStyles, WithStyles, Toolbar, createStyles, Tooltip } from '@material-ui/core'
+import { AppBar, withStyles, WithStyles, Toolbar, createStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 const styles = () => createStyles({
-  root: { flexGrow: 1, marginBottom: 75, fontSize: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' },
-  link: { textAlign: 'center', color: 'white', fontSize: 20, textDecoration: 'none', flexGrow: 1, fontWeight: 400 },
+  root: {
+    flexGrow: 1, marginBottom: 75, fontSize: 20,
+    display: 'flex', justifyContent: 'center', alignItems: 'center'
+  },
+  link: {
+    textAlign: 'center', color: 'white', fontSize: 20,
+    textDecoration: 'none', flexGrow: 1, fontWeight: 400
+  },
   badge: { top: 1, right: -15, fontSize: 16, color: '#76FF03' },
   tooltip: { fontSize: 15 }
 })
 
-type Components = 'home' | 'hackermen' | 'becomeAHackerman' | 'hired' | '404'
+type Components = 'polls' | 'create-poll' | 'poll' | '404' | 'register-login' | 'user-polls' | 'home'
 interface Props extends WithStyles<typeof styles> {
   currentComponent: Components
-  money: number
 }
 /**
  * @usage: Rendered at top of every point in app as a fixed navigation point.
- * @param {Components}  currentComponent The current path/component rendered, used to underline text in header.
+ * @param currentComponent The current path/component rendered, underlined
  */
 class HeaderComp extends React.Component<Props> {
   render() {
-    const { classes, currentComponent, money } = this.props
+    const { classes, currentComponent } = this.props
     return (
       <div className={classes.root}>
         <AppBar color="primary">
           <Toolbar>
             <Link
-              style={{ ...getStylesHeader(currentComponent === 'home') }}
-              className={classes.link} to={'/'}>Home</Link>
+              style={{ ...getStylesHeader(currentComponent === 'polls') }}
+              className={classes.link} to={'/'}>Polls</Link>
             <Link
-              style={getStylesHeader(currentComponent === 'hackermen')}
-              className={classes.link} to={'/hackermen'}>Hackermen</Link>
+              style={getStylesHeader(currentComponent === 'create-poll')}
+              className={classes.link} to={'/hackermen'}>Create</Link>
             <Link
-              style={getStylesHeader(currentComponent === 'hired')}
+              style={getStylesHeader(currentComponent === 'user-polls')}
               className={classes.link}
-              to={'/hired'}>Hired Hackermen</Link>
+              to={'/hired'}>Your Polls</Link>
             <Link
-              style={getStylesHeader(currentComponent === 'becomeAHackerman')}
-              className={classes.link} to={'/apply'}>Become a Hackerman</Link>
+              style={getStylesHeader(currentComponent === 'register-login')}
+              className={classes.link} to={'/apply'}>Login/Register</Link>
             {/* need to use classes to override Tooltip, DO NOT USE CLASSNAME */}
-            <Tooltip
-              placement="bottom"
-              classes={{ tooltip: classes.tooltip }}
-              title="Your current money, you get $100 at the start and $250 for each hackerman you create."
-            >
-              <h2 className={classes.link}>${money}</h2>
-            </Tooltip>
           </Toolbar>
         </AppBar>
       </div>
     )
   }
 }
-const mapStateToProps = (state: State) => ({
-  money: state.money
-})
+const mapStateToProps = (state: State) => ({})
 export const Header = connect(mapStateToProps)(withStyles(styles)(HeaderComp))

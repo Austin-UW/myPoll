@@ -1,10 +1,11 @@
 import * as React from 'react'
-import {
-  closeSnackbar, getClassSnackbarVariant
-} from '../exports'
+import { closeSnackbar, getClassSnackbarVariant } from '../exports'
 import { State, Variant } from '../types'
 import { Dispatch } from 'redux'
-import { withStyles, createStyles, Theme, SnackbarContent, Snackbar, IconButton, WithStyles } from '@material-ui/core'
+import {
+  withStyles, createStyles, Theme, SnackbarContent,
+  Snackbar, IconButton, WithStyles
+} from '@material-ui/core'
 
 import { connect } from 'react-redux'
 
