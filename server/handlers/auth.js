@@ -36,7 +36,7 @@ exports.login = async (req, res, next) => {
     }
   }
   catch (err) {
-    err.message = 'Sorry that username is already taken'
+    err.message = 'sorry wrong username/password'
     next(err)
   }
 }

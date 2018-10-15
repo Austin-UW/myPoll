@@ -1,6 +1,5 @@
 const errors = require('./handlers/index').errors
 const router = require('./routes/index')
-
 require('dotenv').config()
 
 const express = require('express')
@@ -12,7 +11,6 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.get('/hi', router.base)
 app.use('/api/auth', router.auth)
 app.use('/api/polls', router.poll)

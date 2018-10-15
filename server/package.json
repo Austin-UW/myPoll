@@ -11,7 +11,7 @@
     "eslint": "^5.6.1",
     "express": "^4.16.4",
     "js-beautify": "^1.8.7",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.3.3",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.4"
