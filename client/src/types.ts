@@ -26,4 +26,8 @@ export type State = Readonly<{
 }>
 // used in api.ts
 export type Action = Readonly<{ type: 'OPEN_SNACKBAR'; message: string; variant: Variant }
-  | { type: 'CLOSE_SNACKBAR' }>
+  | { type: 'CLOSE_SNACKBAR' }
+  | { type: 'SET_POLLS', polls: Polls }
+  | { type: 'SET_CURRENT_POLL', poll: Poll }
+  | { type: 'ADD_ERROR', error: any }
+  | { type: 'REMOVE_ERROR' }>

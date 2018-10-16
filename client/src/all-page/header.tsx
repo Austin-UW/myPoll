@@ -18,9 +18,10 @@ const styles = () => createStyles({
   tooltip: { fontSize: 15 }
 })
 
-type Components = 'polls' | 'create-poll' | 'poll' | '404' | 'register-login' | 'user-polls' | 'home'
+type Components = 'polls' | 'create-poll' | 'poll' | '404' | 'register' | 'login' | 'user-polls' | 'home'
 interface Props extends WithStyles<typeof styles> {
   currentComponent: Components
+  authenticated: boolean
 }
 /**
  * @usage: Rendered at top of every point in app as a fixed navigation point.
@@ -28,24 +29,29 @@ interface Props extends WithStyles<typeof styles> {
  */
 class HeaderComp extends React.Component<Props> {
   render() {
-    const { classes, currentComponent } = this.props
+    const { classes, currentComponent, authenticated } = this.props
     return (
       <div className={classes.root}>
         <AppBar color="primary">
           <Toolbar>
             <Link
+              style={{ ...getStylesHeader(currentComponent === 'home') }}
+              className={classes.link} to={'/'}>Home</Link>
+            <Link
               style={{ ...getStylesHeader(currentComponent === 'polls') }}
-              className={classes.link} to={'/'}>Polls</Link>
+              className={classes.link} to={'/polls'}>Polls</Link>
             <Link
               style={getStylesHeader(currentComponent === 'create-poll')}
-              className={classes.link} to={'/hackermen'}>Create</Link>
+              className={classes.link} to={'/create-poll'}>Create</Link>
             <Link
               style={getStylesHeader(currentComponent === 'user-polls')}
               className={classes.link}
-              to={'/hired'}>Your Polls</Link>
-            <Link
-              style={getStylesHeader(currentComponent === 'register-login')}
-              className={classes.link} to={'/apply'}>Login/Register</Link>
+              to={'/user-polls'}>Your Polls</Link>
+
+            {authenticated && <Link
+              style={getStylesHeader(currentComponent === 'login')}
+              className={classes.link} to={'/login'}>Login</Link>}
+            {!authenticated && (<Link className={classes.link} to={'/logout'}>Logout</Link>)}
             {/* need to use classes to override Tooltip, DO NOT USE CLASSNAME */}
           </Toolbar>
         </AppBar>
@@ -53,5 +59,7 @@ class HeaderComp extends React.Component<Props> {
     )
   }
 }
-const mapStateToProps = (state: State) => ({})
+const mapStateToProps = (state: State) => ({
+  authenticated: state.authenticated
+})
 export const Header = connect(mapStateToProps)(withStyles(styles)(HeaderComp))
