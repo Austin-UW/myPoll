@@ -8,6 +8,7 @@ interface Props {
   getPolls: () => void
   history: any
   auth: any
+  getUserPolls: () => void
 }
 class Polls extends Component<Props> {
   constructor(props: Props) {
@@ -23,16 +24,15 @@ class Polls extends Component<Props> {
   }
 
   render() {
-
     return (
       <div>
         <Header currentComponent="polls" />
         {this.props.auth.isAuthenticated && (
           <div className="buttons_center">
-            <button className="button" onClick={getPolls}>
+            <button className="button" onClick={this.props.getPolls}>
               All polls
             </button>
-            <button className="button" onClick={getUserPolls}>
+            <button className="button" onClick={this.props.getUserPolls}>
               My polls
             </button>
           </div>

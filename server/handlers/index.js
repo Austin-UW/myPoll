@@ -5,6 +5,7 @@ module.exports = {
 /* tslint:disable */
 /* eslint-disable */
 module.exports.errors = (err, req, res, next) => {
+  console.log('ERROR IN INDEX')
   /* eslint-enable */
   return res.status(err.status || 400).json({
     success: false,

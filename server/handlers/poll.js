@@ -1,10 +1,9 @@
 const db = require('../models')
 
 exports.showPolls = async (req, res, next) => {
+  console.log('show polls handler')
   try {
-    console.log(await db.Poll.find()[0])
     const polls = await db.Poll.find().populate('user', ['username', 'id'])
-    console.log(polls[0])
     res.status(200).json(polls)
   }
   catch (err) {
@@ -38,6 +37,7 @@ exports.createPoll = async (req, res, next) => {
 }
 
 exports.getPollById = async (req, res, next) => {
+  console.log('get poll by id handler')
   try {
     const { id } = req.params
 
@@ -56,6 +56,7 @@ exports.getPollById = async (req, res, next) => {
 }
 
 exports.vote = async (req, res, next) => {
+  console.log('vote handler called')
   const { id: pollId } = req.params
   const { id: userId } = req.decoded
   const { answer } = req.body
@@ -102,6 +103,7 @@ exports.vote = async (req, res, next) => {
 }
 
 exports.deletePoll = async (req, res, next) => {
+  console.log('delete poll called')
   try {
     const { id: pollId } = req.params
     /* delete reference to poll from user */
@@ -127,10 +129,11 @@ exports.deletePoll = async (req, res, next) => {
   }
 }
 exports.userPolls = async (req, res, next) => {
+  console.log('USER POLL HANDLER CALLED')
   try {
+    console.log('gee')
     const { id } = req.decoded
-    const user = await db.User.findById(id)
-      .populate('polls')
+    const user = await db.User.findById(id).populate('polls')
     res.status(200).json(user.polls)
   }
   catch (err) {

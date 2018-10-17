@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 // log all transactions and stop weird deprecation errors
 mongoose.set('useCreateIndex', true)
-mongoose.set('debug', true)
+// mongoose.set('debug', true)
 // allow us to use promises
 mongoose.Promise = global.Promise
 

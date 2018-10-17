@@ -50,7 +50,7 @@ export const removeError = (): Action => {
 export const vote = (path: any, data: { answer: string }) => { // path is the poll id
   return async (dispatch: Dispatch) => {
     try {
-      const poll = await API.call('post', `polls/${path}`, data)
+      const poll = await API.call('post', `polls/do/${path}`, data)
       dispatch(setCurrentPoll(poll))
     } catch (err) {
       const { error } = err.response.data
@@ -62,7 +62,7 @@ export const vote = (path: any, data: { answer: string }) => { // path is the po
 export const getCurrentPoll = (path: any) => {
   return async (dispatch: Dispatch) => {
     try {
-      const poll = await API.call('get', `polls/${path}`)
+      const poll = await API.call('get', `polls/do/${path}`)
       dispatch(setCurrentPoll(poll))
       dispatch(removeError())
     } catch (err) {
@@ -102,7 +102,7 @@ export const authUser = (authType: 'login' | 'register', data: any) => {
 export const getPolls = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const polls = await API.call('get', `polls`)
+      const polls = await API.call('get', `polls/polls`)
       dispatch(setPolls(polls))
       dispatch(removeError())
     } catch (err) {
@@ -117,9 +117,11 @@ export const getUserPolls = () => {
   return async (dispatch: Dispatch) => {
     try {
       const polls = await API.call('get', 'polls/user')
+      console.log(polls)
       dispatch(setPolls(polls))
       dispatch(removeError())
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err.responce.data)
       const { error } = err.response.data
       dispatch(addError(error))
