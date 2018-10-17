@@ -13,7 +13,7 @@ export const openSnackbar = (message: string, variant: Variant): Action => ({
 export const createPoll = (data: CreatePollState) => {
   return async (dispatch: Dispatch) => {
     try {
-      const poll = await API.call('post', 'polls', data)
+      const poll = await API.call('post', 'polls/polls', data)
       dispatch(setCurrentPoll(poll))
       dispatch(removeError())
     } catch (err) {
@@ -124,6 +124,25 @@ export const getUserPolls = () => {
     catch (err) {
       console.log(err.responce.data)
       const { error } = err.response.data
+      dispatch(addError(error))
+    }
+  }
+}
+
+export const deletePoll = (id: string) => {
+  // console.log('deleto')
+  return async (dispatch: Dispatch) => {
+    try {
+      console.log('delete poll action')
+      console.log('polls/do/' + id)
+      const polls = await API.call('delete', 'polls/do/' + id)
+      console.log(polls)
+      dispatch(setPolls(polls))
+      dispatch(removeError())
+    }
+    catch (err) {
+      console.log(err.responce.data)
+      const { error } = err.responce.data
       dispatch(addError(error))
     }
   }

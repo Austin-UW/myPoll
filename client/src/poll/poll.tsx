@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Pie } from 'react-chartjs-2'
 
-import { vote as voteDispatch } from '../utils/actions'
+import { vote as voteDispatch, deletePoll } from '../utils/actions'
 import { Poll, State } from '../types'
 import { Header } from '../exports'
 type Props = {
+  deletePoll: (id: string) => void
   poll: Poll, vote: (id: any, data: { answer: string }) => void
 }
 
@@ -38,6 +39,7 @@ class PollComponent extends React.Component<Props> {
       return (
         <div>
           <Header currentComponent="poll" />
+          <button onClick={() => this.props.deletePoll(poll._id)}>Delete</button>
           <h3 className="poll-title">{poll.question}</h3>
           <div className="buttons_center">{answers}</div>
           <Pie data={data} />
@@ -58,6 +60,7 @@ const mapStateToProps = (state: State) => ({
   poll: state.currentPoll
 })
 const mapDispatchToProps = {
-  vote: voteDispatch
+  vote: voteDispatch,
+  deletePoll: deletePoll
 }
 export const PollContainer = connect(mapStateToProps, mapDispatchToProps)(PollComponent)
