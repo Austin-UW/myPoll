@@ -41,7 +41,8 @@ class Auth extends Component<Props, State> {
     const { username, password } = this.state
     const { authType } = this.props
     e.preventDefault()
-    this.props.authUser(authType || 'login', { username, password })
+    console.log(authType)
+    this.props.authUser(authType, { username, password })
   }
 
   render() {
@@ -84,4 +85,4 @@ class Auth extends Component<Props, State> {
   }
 }
 
-export const AuthRender = connect(() => ({}), { authUser, logout })(Auth)
+export const AuthRender = connect(null, { authUser, logout })(Auth)

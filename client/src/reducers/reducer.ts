@@ -14,6 +14,7 @@ export const reducer = (state: State, action: Action) => {
       }
     case 'SET_CURRENT_USER':
       return {
+        ...state,
         auth: {
           ...state.auth,
           isAuthenticated: !!Object.keys(action.user).length, // excuse me what the fuck?
@@ -31,9 +32,15 @@ export const reducer = (state: State, action: Action) => {
         error: { ...state.error, message: null }
       }
     case 'SET_CURRENT_POLL':
-      return action.poll
+      return {
+        ...state,
+        currentPoll: { ...action.poll }
+      }
     case 'SET_POLLS':
-      return action.polls
+      return {
+        ...state,
+        polls: [...action.polls]
+      }
     // this probably should be done in the saga but same thing?
     default:
       return state

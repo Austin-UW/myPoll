@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-const uuidv1 = require('uuid/v1')
 import { createPoll } from '../utils/actions'
 import { Header } from '../exports'
 interface Props {
@@ -61,16 +60,13 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
           />
           <div className="container">
             {this.state.options.map((option: string, i) => (
-              <div key={uuidv1()}>
-                <label className="form-label">option</label>
-                <input
-                  className="form-input"
-                  type="text"
-                  value={option}
-                  key={i}
-                  onChange={(e) => this.handleAnswer(e, i)}
-                />
-              </div>
+              <input
+                className="form-input"
+                type="text"
+                value={option}
+                key={i}
+                onChange={(e) => this.handleAnswer(e, i)}
+              />
             ))}
           </div>
           <div className="buttons_center">

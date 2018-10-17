@@ -7,10 +7,21 @@ import { reducer, SnackbarRoot, defaultState } from '../exports'
 import thunk from 'redux-thunk'
 import { theme } from './theme'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-
+import { setToken } from './api'
+import { setCurrentUser, addError } from './actions'
+import decode from 'jwt-decode'
 
 export const store = createStore(reducer, defaultState, composeWithDevTools(applyMiddleware(thunk)))
-
+if (localStorage.jwtToken) {
+  console.log('jwt if triggered')
+  setToken(localStorage.jwtToken)
+  try {
+    store.dispatch(setCurrentUser(decode(localStorage.jwtToken)))
+  } catch (err) {
+    store.dispatch(setCurrentUser({}))
+    store.dispatch(addError(err))
+  }
+}
 
 const Wrapper = () => {
   return (

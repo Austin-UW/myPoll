@@ -85,15 +85,42 @@ export const logout = () => {
   }
 }
 
-export const authUser = (path: any, data: any) => {
+export const authUser = (authType: 'login' | 'register', data: any) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { token, ...user } = await API.call('post', `auth/${path}`, data)
+      const { token, ...user } = await API.call('post', `auth/${authType}`, data)
       localStorage.setItem('jwtToken', token)
       API.setToken(token)
       dispatch(setCurrentUser(user))
       dispatch(removeError())
     } catch (err) {
+      const { error } = err.response.data
+      dispatch(addError(error))
+    }
+  }
+}
+export const getPolls = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const polls = await API.call('get', `polls`)
+      dispatch(setPolls(polls))
+      dispatch(removeError())
+    } catch (err) {
+      const { error } = err.response.data
+      console.log(error)
+      dispatch(addError(error))
+    }
+  }
+}
+
+export const getUserPolls = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const polls = await API.call('get', 'polls/user')
+      dispatch(setPolls(polls))
+      dispatch(removeError())
+    } catch (err) {
+      console.log(err.responce.data)
       const { error } = err.response.data
       dispatch(addError(error))
     }
