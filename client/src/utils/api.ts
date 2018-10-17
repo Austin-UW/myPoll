@@ -10,7 +10,7 @@ export const setToken = (token: any) => {
   }
 }
 
-export const call = async (method: 'get' | 'post' | 'delete', path: string, data: any) => {
+export const call = async (method: 'get' | 'post' | 'delete', path: string, data?: any) => {
   // because i am lazy
   if (method === 'get') {
     const response = await axios.get(`${host}/${path}`, data)

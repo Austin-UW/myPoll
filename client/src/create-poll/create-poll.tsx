@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
+const uuidv1 = require('uuid/v1')
 import { createPoll } from '../utils/actions'
+import { Header } from '../exports'
 interface Props {
   createPoll: (data: CreatePollState) => void
 }
@@ -14,8 +15,8 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      question: '',
-      options: ['', ''],
+      question: 'put question here',
+      options: ['option'],
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -44,41 +45,44 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
   }
 
   render() {
-    const options: any = this.state.options.map((option: string, i) => (
-      <Fragment>
-        <label className="form-label">option</label>
-        <input
-          className="form-input"
-          type="text"
-          value={options}
-          key={i}
-          onChange={(e) => this.handleAnswer(e, i)}
-        />
-      </Fragment>
-    ))
-
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
-        <label className="form-label" htmlFor="question">
-          question
+      <>
+        <Header currentComponent="create-poll" />
+        <form className="form" onSubmit={this.handleSubmit}>
+          <label className="form-label" htmlFor="question">
+            question
         </label>
-        <input
-          className="form-input"
-          type="text"
-          name="question"
-          value={this.state.question}
-          onChange={this.handleChange}
-        />
-        <div className="container">{options}</div>
-        <div className="buttons_center">
-          <button className="button" type="button" onClick={this.addAnswer}>
-            Add options
+          <input
+            className="form-input"
+            type="text"
+            name="question"
+            value={this.state.question}
+            onChange={this.handleChange}
+          />
+          <div className="container">
+            {this.state.options.map((option: string, i) => (
+              <div key={uuidv1()}>
+                <label className="form-label">option</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={option}
+                  key={i}
+                  onChange={(e) => this.handleAnswer(e, i)}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="buttons_center">
+            <button className="button" type="button" onClick={this.addAnswer}>
+              Add options
           </button>
-          <button className="button" type="submit">
-            Submit
+            <button className="button" type="submit">
+              Submit
           </button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </>
     )
   }
 }

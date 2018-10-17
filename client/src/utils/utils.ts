@@ -9,7 +9,20 @@ export const defaultState: State = {
     message: 'WE ARE IN BOIS, HOLD YOUR GROUND',
     variant: 'success'
   },
-  authenticated: false,
+  currentPoll: null /* {
+    user: 'username',
+    _id: 'gee',
+    question: 'YA LIKE LOADING',
+    votes: 2,
+    options: [{ name: 'no', votes: 1, _id: 'hi' }]
+  } */,
+  error: {
+    message: null
+  },
+  auth: {
+    isAuthenticated: false,
+    user: null
+  },
   polls: [],
   isLoading: true
 }

@@ -46,3 +46,56 @@ export const removeError = (): Action => {
     type: 'REMOVE_ERROR'
   }
 }
+
+export const vote = (path: any, data: { answer: string }) => { // path is the poll id
+  return async (dispatch: Dispatch) => {
+    try {
+      const poll = await API.call('post', `polls/${path}`, data)
+      dispatch(setCurrentPoll(poll))
+    } catch (err) {
+      const { error } = err.response.data
+      dispatch(addError(error))
+    }
+  }
+}
+
+export const getCurrentPoll = (path: any) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const poll = await API.call('get', `polls/${path}`)
+      dispatch(setCurrentPoll(poll))
+      dispatch(removeError())
+    } catch (err) {
+      const { error } = err.response.data
+      dispatch(addError(error))
+    }
+  }
+}
+export const setCurrentUser = (user: any): Action => ({
+  type: 'SET_CURRENT_USER',
+  user,
+})
+
+export const logout = () => {
+  return (dispatch: Dispatch) => {
+    localStorage.clear()
+    API.setToken(null)
+    dispatch(setCurrentUser({}))
+    dispatch(removeError())
+  }
+}
+
+export const authUser = (path: any, data: any) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { token, ...user } = await API.call('post', `auth/${path}`, data)
+      localStorage.setItem('jwtToken', token)
+      API.setToken(token)
+      dispatch(setCurrentUser(user))
+      dispatch(removeError())
+    } catch (err) {
+      const { error } = err.response.data
+      dispatch(addError(error))
+    }
+  }
+}

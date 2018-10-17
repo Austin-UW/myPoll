@@ -14,6 +14,8 @@ export {
   State, Variant, Snackbar, Option, Options, Poll,
   Polls, Action
 } from './types'
-export { PollContainer } from './poll/poll'
+export { PollRender } from './poll/render'
+export { PollsContainer } from './polls/polls'
 export { Home } from './home/home'
 export { CreatePoll } from './create-poll/create-poll'
+export { AuthRender } from './auth/auth'
