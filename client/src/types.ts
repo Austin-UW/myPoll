@@ -16,7 +16,10 @@ export type Poll = {
   question: string
   votes: number
   options: Options
-  user: string /** @todo check if this should be number when sent to react thanks */
+  user: {
+    _id: string,
+    username: string
+  }
 }
 // export type User = {}
 export type Polls = Poll[]
@@ -26,7 +29,7 @@ export type State = Readonly<{
   polls: Polls
   auth: {
     isAuthenticated: boolean
-    user: any
+    user: { id: string, username: string, iat: number } | null
   }
   currentPoll: Poll | null
   isLoading: boolean

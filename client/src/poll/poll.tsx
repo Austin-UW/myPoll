@@ -5,14 +5,16 @@ import { Pie } from 'react-chartjs-2'
 import { vote as voteDispatch, deletePoll } from '../utils/actions'
 import { Poll, State } from '../types'
 import { Header } from '../exports'
+import { Link } from 'react-router-dom'
 type Props = {
   deletePoll: (id: string) => void
   poll: Poll, vote: (id: any, data: { answer: string }) => void
+  auth: { isAuthenticated: boolean, user: { id: string, username: string, iat: number } | null }
 }
 
 class PollComponent extends React.Component<Props> {
   render() {
-    const { poll, vote } = this.props
+    const { poll, vote, auth } = this.props
     if (poll) {
       const answers =
         poll.options &&
@@ -39,7 +41,9 @@ class PollComponent extends React.Component<Props> {
       return (
         <div>
           <Header currentComponent="poll" />
-          <button onClick={() => this.props.deletePoll(poll._id)}>Delete</button>
+          {auth.user ? poll.user._id === auth.user.id && (
+            <Link to="/" onClick={() => this.props.deletePoll(poll._id)}>Delete</Link>
+          ) : null}
           <h3 className="poll-title">{poll.question}</h3>
           <div className="buttons_center">{answers}</div>
           <Pie data={data} />
@@ -57,7 +61,8 @@ class PollComponent extends React.Component<Props> {
   }
 }
 const mapStateToProps = (state: State) => ({
-  poll: state.currentPoll
+  poll: state.currentPoll,
+  auth: state.auth
 })
 const mapDispatchToProps = {
   vote: voteDispatch,
