@@ -1,6 +1,12 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowJs": true,

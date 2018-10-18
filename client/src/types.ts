@@ -6,8 +6,9 @@ export type Snackbar = {
   variant: Variant
 }
 export type Option = {
+  color?: any
   _id: any
-  name: string,
+  name: string
   votes: number
 }
 export type Options = Option[]

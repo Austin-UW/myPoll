@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Pie } from 'react-chartjs-2'
-
+import { RadialChart } from 'react-vis'
 import { vote as voteDispatch, deletePoll } from '../utils/actions'
 import { Poll, State } from '../types'
 import { Header } from '../exports'
@@ -26,18 +25,10 @@ class PollComponent extends React.Component<Props> {
             {option.name}
           </button>
         ))
-
-      const data = {
-        labels: poll.options.map((option) => option.name),
-        datasets: [
-          {
-            label: poll.question,
-            backgroundColor: poll.options.map((option) => '#' + Math.random().toString(16).slice(2, 8)),
-            borderColor: '#323643',
-            data: poll.options.map((option) => option.votes),
-          },
-        ],
-      }
+      const data = poll.options.map((option) => ({
+        label: option.name,
+        angle: option.votes
+      }))
       return (
         <div>
           <Header currentComponent="poll" />
@@ -46,7 +37,14 @@ class PollComponent extends React.Component<Props> {
           ) : null}
           <h3 className="poll-title">{poll.question}</h3>
           <div className="buttons_center">{answers}</div>
-          <Pie data={data} />
+          <RadialChart
+            labelsRadiusMultiplier={.85}
+            labelsStyle={{ fontSize: 18 }}
+            data={data}
+            height={400}
+            width={400}
+            showLabels
+          />
         </div >
       )
     }
