@@ -5,13 +5,13 @@ import { vote as voteDispatch, deletePoll } from '../utils/actions'
 import { Poll, State } from '../types'
 import { Header } from '../exports'
 import { Link } from 'react-router-dom'
-type Props = {
+type PollProps = {
   deletePoll: (id: string) => void
   poll: Poll, vote: (id: any, data: { answer: string }) => void
   auth: { isAuthenticated: boolean, user: { id: string, username: string, iat: number } | null }
 }
 
-class PollComponent extends React.Component<Props> {
+class PollComponent extends React.Component<PollProps> {
   render() {
     const { poll, vote, auth } = this.props
     if (poll) {
@@ -25,10 +25,15 @@ class PollComponent extends React.Component<Props> {
             {option.name}
           </button>
         ))
-      const data = poll.options.map((option) => ({
-        label: option.name,
-        angle: option.votes
-      }))
+      const data = poll.options.map((option) => {
+        if (option.votes > 0) {
+          return {
+            label: option.name,
+            angle: option.votes
+          }
+        }
+        return { angle: 0 }
+      })
       return (
         <div>
           <Header currentComponent="poll" />
