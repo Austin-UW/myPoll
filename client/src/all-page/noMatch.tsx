@@ -7,20 +7,16 @@ import { Link } from 'react-router-dom'
 const NoMatchComponent = () => (
   <div className="root">
     <Header currentComponent="404" />
-    <div id="clouds">
-      <div className="cloud x1" />
-      <div className="cloud x1_5" />
-      <div className="cloud x2" />
-      <div className="cloud x3" />
-      <div className="cloud x4" />
-      <div className="cloud x5" />
-    </div >
-    <hr />
-    <div className="c">
-      <div className="_404">404</div>
-      <div className="_1">THE PAGE</div>
-      <div className="_2">WAS NOT FOUND</div>
-      <Link className="btn" to="/">BACK TO MARS</Link>
+    <div id="notfound">
+      <div className="notfound">
+        <div className="notfound-404">
+          <h1>4<span>0</span>4</h1>
+        </div>
+        <p>The page you are looking for might have been removed
+          had its name changed or is temporarily unavailable.
+        </p>
+        <Link to="/">home page</Link>
+      </div>
     </div>
   </div>
 )

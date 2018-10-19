@@ -7,7 +7,7 @@ import { logout } from '../utils/actions'
 
 const styles = () => createStyles({
   root: {
-    flexGrow: 1, marginBottom: 75, fontSize: 20,
+    flexGrow: 1, marginBottom: 64, fontSize: 20,
     display: 'flex', justifyContent: 'center', alignItems: 'center'
   },
   link: {
