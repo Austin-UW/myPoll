@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { RadialChart } from 'react-vis'
+import { RadialChart, DiscreteColorLegend } from 'react-vis'
 import { vote as voteDispatch, deletePoll } from '../utils/actions'
-import { Poll, State } from '../types'
+import { Poll, State, Option } from '../types'
 import { Header } from '../exports'
 import { Link } from 'react-router-dom'
 type PollProps = {
@@ -25,7 +25,7 @@ class PollComponent extends React.Component<PollProps> {
             {option.name}
           </button>
         ))
-      const data = poll.options.map((option) => {
+      const data = poll.options.map((option: Option) => {
         if (option.votes > 0) {
           return {
             label: option.name,
@@ -42,13 +42,20 @@ class PollComponent extends React.Component<PollProps> {
           ) : null}
           <h3 className="poll-title">{poll.question}</h3>
           <div className="buttons_center">{answers}</div>
-          <RadialChart
-            labelsRadiusMultiplier={.85}
-            labelsStyle={{ fontSize: 18 }}
-            data={data}
-            height={400}
-            width={400}
-            showLabels
+          <div style={{ marginLeft: 20 }}>
+            <RadialChart
+              labelsRadiusMultiplier={.85}
+              labelsStyle={{ fontSize: 18 }}
+              data={data}
+              height={400}
+              width={400}
+              showLabels
+            />
+          </div>
+          <DiscreteColorLegend
+            orientation="horizontal"
+            style={{ fontSize: 17, marginLeft: 100 }}
+            items={poll.options.map((option) => option.name)}
           />
         </div >
       )
