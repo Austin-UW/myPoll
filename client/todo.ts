@@ -2,18 +2,22 @@
   omg what if you wrote an npm package that takes an object of todos that can have subthings like so:
   and makes it super cool with checkmarks and formatting
 */
+/** @todo make an interface for todos and DONT manually enter names of keys, */
 const todos = {
   allPage: {
-    header: [],
-    noMatch: [],
-    snackbarRoot: []
+    header: { header: [] },
+    noMatch: [
+      { description: 'make it stylish', completed: true },
+      { descrption: 'make ' }
+    ],
+    snackbarRoot: { snackbarRoot: [] }
   },
   auth: {
     auth: []
   },
-  createPoll: [],
-  snackbarHOC: [],
-  home: [],
+  createPoll: { createPoll: [] },
+  snackbarHOC: { snackbarHOC: [] },
+  home: { home: [] },
   poll: {
     poll: [
       { description: 'make poll chart responsive', completed: false },
@@ -25,5 +29,5 @@ const todos = {
       { description: 'delete it and move to poll componentWillMount or didMount', completed: false }
     ]
   },
-  polls: []
+  polls: { polls: [] }
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { RadialChart, DiscreteColorLegend } from 'react-vis'
 import { vote as voteDispatch, deletePoll } from '../utils/actions'
 import { Poll, State, Option } from '../types'
-import { Header } from '../exports'
+import { Header, NoMatch } from '../exports'
 import { Link } from 'react-router-dom'
 type PollProps = {
   deletePoll: (id: string) => void
@@ -64,7 +64,7 @@ class PollComponent extends React.Component<PollProps> {
       return (
         <>
           <Header currentComponent="poll" />
-          <h1>Hiya</h1>
+          <NoMatch />
         </>
       )
     }
