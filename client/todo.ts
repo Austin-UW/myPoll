@@ -8,7 +8,7 @@ const todos = {
     header: { header: [] },
     noMatch: [
       { description: 'make it stylish', completed: true },
-      { descrption: 'make ' }
+      { descrption: 'make it not have bottom whitespace', completed: false }
     ],
     snackbarRoot: { snackbarRoot: [] }
   },

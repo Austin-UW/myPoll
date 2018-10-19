@@ -1,8 +1,3 @@
-* {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
 body {
   padding: 0;
   margin: 0;
@@ -27,7 +22,6 @@ body {
 
 .notfound {
   max-width: 460px;
-  width: 100%;
   text-align: center;
   line-height: 1.4;
 }
