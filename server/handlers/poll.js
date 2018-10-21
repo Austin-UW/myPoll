@@ -37,7 +37,6 @@ exports.createPoll = async (req, res, next) => {
 }
 
 exports.getPollById = async (req, res, next) => {
-  console.log('get poll by id handler')
   try {
     const { id } = req.params
 

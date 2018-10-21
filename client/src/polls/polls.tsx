@@ -1,54 +1,74 @@
-import React, { Component } from 'react'
+import React, { Component, ChangeEvent } from 'react'
 import { connect } from 'react-redux'
 import { Polls as PollsType, State } from '../types'
 import { getPolls, getUserPolls } from '../utils/actions'
 import { Header, withSnack } from '../exports'
+import { Tabs, Tab, Paper, List, ListItem, Divider } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 interface Props {
   polls: PollsType
   getPolls: () => void
-  history: any
-  auth: any
+  isAuthenticated: boolean
   getUserPolls: () => void
 }
-class Polls extends Component<Props> {
+interface PollState {
+  value: number
+}
+class Polls extends Component<Props, PollState> {
+  state: PollState = {
+    value: 0
+  }
   constructor(props: Props) {
     super(props)
-    this.handleSelect = this.handleSelect.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount() {
     this.props.getPolls()
   }
-
-  handleSelect(id: any) { // ??? excuse me what? 吗？
-    this.props.history.push(`/poll/${id}`)
+  handleChange = (event: ChangeEvent, value: number) => {
+    if (value === 0) {
+      this.props.getPolls()
+    }
+    else if (value === 1) {
+      this.props.getUserPolls()
+    }
+    this.setState({ value })
   }
-
   render() {
+    const { value } = this.state
     return (
       <div style={{ marginTop: 75 }}>
         <Header currentComponent="polls" />
-        {this.props.auth.isAuthenticated && (
-          <div className="buttons_center">
-            <button className="button" onClick={this.props.getPolls}>
-              All polls
-            </button>
-            <button className="button" onClick={this.props.getUserPolls}>
-              My polls
-            </button>
+        {this.props.isAuthenticated && (
+          <div>
+            <Paper style={{ maxWidth: 320, marginLeft: 30 }} square>
+              <Tabs value={value} onChange={this.handleChange} centered>
+                <Tab label="All Polls" />
+                <Tab label="Your Polls" />
+              </Tabs>
+            </Paper>
           </div>
         )}
-        <ul className="polls">{this.props.polls.map((poll) => (
-          <li onClick={() => this.handleSelect(poll._id)} key={poll._id}>
-            {poll.question}
-          </li>
+        <List>{this.props.polls.map((poll) => (
+          <div key={poll._id}>
+            <Link
+              style={{ textDecoration: 'none', width: '100%', height: '100%', color: 'black' }}
+              to={`/poll/${poll._id}`}
+            >
+              <ListItem button>
+                {poll.question}
+              </ListItem>
+            </Link>
+            <Divider />
+          </div>
         ))}
-        </ul>
+        </List>
       </div >
     )
   }
 }
 const mapStateToProps = (state: State) => ({
-  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
   polls: state.polls,
 })
 const mapDispatchToProps = {

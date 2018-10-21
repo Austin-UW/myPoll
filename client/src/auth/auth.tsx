@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, ChangeEvent } from 'react'
 import { connect } from 'react-redux'
 
 import { authUser, logout } from '../utils/actions'
@@ -6,7 +6,7 @@ import { Header } from '../exports'
 
 interface Props {
   authType: 'register' | 'login'
-  authUser: any // change
+  authUser: (authType: 'login' | 'register', data: { username: string, password: string }) => void // change
 }
 interface State {
   username: string
@@ -24,7 +24,7 @@ class Auth extends Component<Props, State> {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(e: any) {
+  handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.name === 'username') {
       this.setState({ username: e.target.value })
 
@@ -37,7 +37,7 @@ class Auth extends Component<Props, State> {
     }
   }
 
-  handleSubmit(e: any) {
+  handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     const { username, password } = this.state
     const { authType } = this.props
     e.preventDefault()
@@ -49,11 +49,11 @@ class Auth extends Component<Props, State> {
     const { username, password } = this.state
     const { authType } = this.props
     return (
-      <div style={{ marginTop: 25 }}>
+      <div style={{ marginTop: 75 }}>
         <Header currentComponent={authType} />
-        <form className="form" onSubmit={this.handleSubmit}>
-          <label className="form-label" htmlFor="username">
-            username{' '}
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="username">
+            username
           </label>
           <input
             type="text"
@@ -64,7 +64,7 @@ class Auth extends Component<Props, State> {
             className="form-input"
           />
           <label className="form-label" htmlFor="password">
-            password{' '}
+            password
           </label>
           <input
             type="password"

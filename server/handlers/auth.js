@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken')
 const db = require('../models/index')
 // handlers/auth.js
 exports.register = async (req, res, next) => {
-  console.log('REGISTER HANDLER CALLEd in handlers/auth.js')
-
   try {
     const user = await db.User.create(req.body)
     const { id, username } = user

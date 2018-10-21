@@ -17,7 +17,10 @@ interface Props {
 /*
 *@ props: compType = component name, wrappedComponent = connected component, variant = default success
 */
-export const withSnack = (compType: string, WrappedComponent: any, variant?: Variant, message?: string) => {
+export const withSnack = (
+  compType: string, WrappedComponent: React.ComponentType,
+  variant?: Variant, message?: string
+) => {
   return connect(mapStateToProps, mapDispatchToProps)(class SnackbarHOCReturn extends React.Component<Props> {
     componentDidMount() {
       if (!this.props.open && message) {

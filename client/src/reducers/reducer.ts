@@ -36,13 +36,17 @@ export const reducer = (state: State, action: Action) => {
         ...state,
         currentPoll: { ...action.poll }
       }
+    case 'SET_USER_POLLS':
+      return {
+        ...state,
+        userPolls: [...action.polls]
+      }
     case 'SET_POLLS':
       return {
         ...state,
         polls: [...action.polls]
       }
     case 'START_LOADING':
-      console.log('reducer start laoding')
       return {
         ...state,
         isLoading: true

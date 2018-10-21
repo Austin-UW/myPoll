@@ -1,4 +1,4 @@
-import { Variant, Action, Polls, Poll } from '../types'
+import { Variant, Action, Polls, Poll, User } from '../types'
 import { CreatePollState } from '../create-poll/create-poll'
 import { Dispatch } from 'redux'
 import { API } from './api'
@@ -46,7 +46,7 @@ export const setCurrentPoll = (poll: Poll): Action => {
   }
 }
 
-export const addError = (error: any): Action => ({
+export const addError = (error: string): Action => ({
   type: 'ADD_ERROR',
   error
 })
@@ -57,7 +57,7 @@ export const removeError = (): Action => {
   }
 }
 
-export const vote = (path: any, data: { answer: string }) => { // path is the poll id
+export const vote = (path: string, data: { answer: string }) => { // path is the poll id
   return async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading())
@@ -72,11 +72,10 @@ export const vote = (path: any, data: { answer: string }) => { // path is the po
   }
 }
 
-export const getCurrentPoll = (path: any) => {
+export const getCurrentPoll = (path: string) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading())
-      console.log('loading started')
       const poll = await API.call('get', `polls/do/${path}`)
       dispatch(setCurrentPoll(poll))
       dispatch(removeError())
@@ -95,10 +94,12 @@ export const getCurrentPoll = (path: any) => {
     }
   }
 }
-export const setCurrentUser = (user: any): Action => ({
-  type: 'SET_CURRENT_USER',
-  user,
-})
+export const setCurrentUser = (user: User): Action => {
+  return {
+    type: 'SET_CURRENT_USER',
+    user
+  }
+}
 
 export const logout = () => {
   return (dispatch: Dispatch) => {
@@ -111,7 +112,7 @@ export const logout = () => {
   }
 }
 
-export const authUser = (authType: 'login' | 'register', data: any) => {
+export const authUser = (authType: 'login' | 'register', data: { username: string, password: string }) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading())

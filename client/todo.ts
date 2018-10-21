@@ -4,8 +4,24 @@
 */
 /** @todo make an interface for todos and DONT manually enter names of keys, */
 const todos = {
+  important: [
+    {
+      where: 'poll component voting when already voted',
+      description: 'make it so if you have already voted it just shows error',
+      completed: false
+    },
+    {
+      where: 'login and register',
+      description: 'give message that they logged in or it failed/redirect them.'
+    }
+  ],
+  actions: [],
+  reducer: [],
+  indexFiles: [],
+  packageJsonOrConfig: [],
   all: [
-    { description: 'make a loading hoc and a loading + snackbar hoc', completed: false },
+    { description: 'make state and props always readonly' },
+    { description: 'DESTROY ALL ANYS REE', completed: '10%' },
     { description: 'make it have a margin at the top.', completed: 'meh' || true }
   ],
   header: [
@@ -32,17 +48,14 @@ const todos = {
     { description: 'give description of the app', completed: false }
   ],
   poll: [
-    {
-      important: true,
-      description: 'make it so if you have already voted it just shows error',
-      completed: false
-    },
     { description: 'make buttons material and alignment to center' },
     { description: 'make poll chart responsive', completed: false },
     { description: 'make it clear it is their poll', completed: false },
     { description: 'make delete button not dissapear if not their poll but be disabled', completed: false }
   ],
   pollList: [
+    { description: 'make it like stonks shop page grid thing' },
+    { description: 'make it not make unnecessary server calls' },
     { description: 'make it material', completed: false },
     { description: 'make icon so you see it is yours even in show all' },
     { description: 'make it have tabs instead of buttons for all or yours', completed: false }

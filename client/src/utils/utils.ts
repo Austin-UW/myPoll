@@ -23,6 +23,7 @@ export const defaultState: State = {
     isAuthenticated: false,
     user: null
   },
+  userPolls: [],
   polls: [],
   isLoading: false
 }

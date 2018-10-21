@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, ChangeEvent, FormEvent } from 'react'
 import { connect } from 'react-redux'
 import { createPoll } from '../utils/actions'
 import { Header } from '../exports'
+import { Button, TextField } from '@material-ui/core'
 interface Props {
   createPoll: (data: CreatePollState) => void
 }
@@ -14,8 +15,8 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      question: 'put question here',
-      options: ['option'],
+      question: '',
+      options: [''],
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -24,7 +25,7 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(e: any) {
+  handleChange(e: ChangeEvent<HTMLInputElement>) {
     this.setState({ question: e.target.value })
   }
 
@@ -32,13 +33,13 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
     this.setState({ options: [...this.state.options, ''] })
   }
 
-  handleAnswer(e: any, index: number) {
+  handleAnswer(e: ChangeEvent<HTMLInputElement>, index: number) {
     const options = [...this.state.options]
     options[index] = e.target.value
     this.setState({ options })
   }
 
-  handleSubmit(e: any) {
+  handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     this.props.createPoll(this.state)
   }
@@ -48,35 +49,27 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
       <div style={{ marginTop: 75 }}>
         <Header currentComponent="create-poll" />
         <form className="form" onSubmit={this.handleSubmit}>
-          <label className="form-label" htmlFor="question">
-            question
-        </label>
-          <input
-            className="form-input"
-            type="text"
-            name="question"
+          <TextField
             value={this.state.question}
             onChange={this.handleChange}
+            required
+            label="Name"
           />
-          <div className="container">
-            {this.state.options.map((option: string, i) => (
-              <input
-                className="form-input"
-                type="text"
-                value={option}
-                key={i}
-                onChange={(e) => this.handleAnswer(e, i)}
-              />
-            ))}
-          </div>
-          <div className="buttons_center">
-            <button className="button" type="button" onClick={this.addAnswer}>
-              Add options
-          </button>
-            <button className="button" type="submit">
-              Submit
-          </button>
-          </div>
+          {this.state.options.map((option: string, i) => (
+            <TextField
+              value={option}
+              key={i}
+              label="Option"
+              required
+              onChange={(e: ChangeEvent<HTMLInputElement>) => this.handleAnswer(e, i)}
+            />
+          ))}
+          <Button onClick={this.addAnswer}>
+            Add options
+          </Button>
+          <Button variant="contained" color="primary" type="submit">
+            Submit
+          </Button>
         </form>
       </div>
     )

@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom'
 import { Pie } from 'react-chartjs-2'
 
 const colors = [
-  '#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
-  '#2196F3', '#B388FF', '#00BCD4', '#009688', '#4CAF50',
-  '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800',
-  '#FF5722', '#607D8B'
+  '#B388FF', '#9C27B0', '#3F51B5',
+  '#2196F3', '#00BCD4', '#009688', '#4CAF50',
+  '#8BC34A', '#CDDC39', '#FFC107', '#FF9800',
+  '#FF5722', '#607D8B', '#673AB7', '#F44336'
 ]
 
 type PollProps = {
@@ -18,15 +18,13 @@ type PollProps = {
   getCurrentPoll: (id: string) => void
   isLoading: boolean
   deletePoll: (id: string) => void
-  poll: Poll, vote: (id: any, data: { answer: string }) => void
+  poll: Poll, vote: (id: string, data: { answer: string }) => void
   auth: { isAuthenticated: boolean, user: { id: string, username: string, iat: number } | null }
 }
 
 class PollComponent extends React.Component<PollProps> {
   componentWillMount() {
-    console.log('will mount')
     this.props.getCurrentPoll(this.props.id)
-    console.log('called')
   }
   render() {
     const { poll, auth, isLoading } = this.props
@@ -34,7 +32,8 @@ class PollComponent extends React.Component<PollProps> {
       const answers = poll.options && poll.options.map((option) => (
         <button
           onClick={() => this.props.vote(poll._id, { answer: option.name })}
-          key={option._id}>
+          key={option._id}
+        >
           {option.name}
         </button>
       ))
@@ -64,7 +63,6 @@ class PollComponent extends React.Component<PollProps> {
       )
     }
     else if (!this.props.isLoading) {
-      console.log(this.props.isLoading)
       return (
         <NoMatch />
       )
