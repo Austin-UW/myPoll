@@ -13,7 +13,6 @@ import decode from 'jwt-decode'
 
 export const store = createStore(reducer, defaultState, composeWithDevTools(applyMiddleware(thunk)))
 if (localStorage.jwtToken) {
-  console.log('jwt if triggered')
   setToken(localStorage.jwtToken)
   try {
     store.dispatch(setCurrentUser(decode(localStorage.jwtToken)))

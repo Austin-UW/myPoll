@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { vote as voteDispatch, deletePoll } from '../utils/actions'
+import { vote, deletePoll, getCurrentPoll } from '../utils/actions'
 import { Poll, State, Option } from '../types'
-import { Header, NoMatch } from '../exports'
+import { Header, NoMatch, withSnack } from '../exports'
 import { Link } from 'react-router-dom'
 import { Pie } from 'react-chartjs-2'
 
@@ -14,6 +14,8 @@ const colors = [
 ]
 
 type PollProps = {
+  id: string
+  getCurrentPoll: (id: string) => void
   isLoading: boolean
   deletePoll: (id: string) => void
   poll: Poll, vote: (id: any, data: { answer: string }) => void
@@ -21,12 +23,17 @@ type PollProps = {
 }
 
 class PollComponent extends React.Component<PollProps> {
+  componentWillMount() {
+    console.log('will mount')
+    this.props.getCurrentPoll(this.props.id)
+    console.log('called')
+  }
   render() {
-    const { poll, vote, auth } = this.props
-    if (poll) {
+    const { poll, auth, isLoading } = this.props
+    if (poll && !isLoading) {
       const answers = poll.options && poll.options.map((option) => (
         <button
-          onClick={() => vote(poll._id, { answer: option.name })}
+          onClick={() => this.props.vote(poll._id, { answer: option.name })}
           key={option._id}>
           {option.name}
         </button>
@@ -39,7 +46,8 @@ class PollComponent extends React.Component<PollProps> {
         }]
       }
       return (
-        <div>
+        <div style={{ marginTop: 75, marginLeft: 20 }}>
+          {/* like jazz */}
           <Header currentComponent="poll" />
           {auth.user ? poll.user._id === auth.user.id && (
             <Link to="/" onClick={() => this.props.deletePoll(poll._id)}>Delete</Link>
@@ -56,6 +64,7 @@ class PollComponent extends React.Component<PollProps> {
       )
     }
     else if (!this.props.isLoading) {
+      console.log(this.props.isLoading)
       return (
         <NoMatch />
       )
@@ -71,7 +80,8 @@ const mapStateToProps = (state: State) => ({
   auth: state.auth
 })
 const mapDispatchToProps = {
-  vote: voteDispatch,
-  deletePoll: deletePoll
+  vote,
+  deletePoll,
+  getCurrentPoll
 }
-export const PollContainer = connect(mapStateToProps, mapDispatchToProps)(PollComponent)
+export const PollRender = withSnack('poll', connect(mapStateToProps, mapDispatchToProps)(PollComponent))

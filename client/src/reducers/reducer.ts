@@ -41,6 +41,17 @@ export const reducer = (state: State, action: Action) => {
         ...state,
         polls: [...action.polls]
       }
+    case 'START_LOADING':
+      console.log('reducer start laoding')
+      return {
+        ...state,
+        isLoading: true
+      }
+    case 'STOP_LOADING':
+      return {
+        ...state,
+        isLoading: false
+      }
     // this probably should be done in the saga but same thing?
     default:
       return state

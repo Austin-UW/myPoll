@@ -24,7 +24,7 @@ export const defaultState: State = {
     user: null
   },
   polls: [],
-  isLoading: true
+  isLoading: false
 }
 
 /**

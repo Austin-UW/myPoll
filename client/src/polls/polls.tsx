@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Polls as PollsType, State } from '../types'
 import { getPolls, getUserPolls } from '../utils/actions'
-import { Header } from '../exports'
+import { Header, withSnack } from '../exports'
 interface Props {
   polls: PollsType
   getPolls: () => void
@@ -25,7 +25,7 @@ class Polls extends Component<Props> {
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: 75 }}>
         <Header currentComponent="polls" />
         {this.props.auth.isAuthenticated && (
           <div className="buttons_center">
@@ -47,11 +47,15 @@ class Polls extends Component<Props> {
     )
   }
 }
-
+const mapStateToProps = (state: State) => ({
+  auth: state.auth,
+  polls: state.polls,
+})
+const mapDispatchToProps = {
+  getPolls,
+  getUserPolls
+}
 export const PollsContainer = connect(
-  (state: State) => ({
-    auth: state.auth,
-    polls: state.polls,
-  }),
-  { getPolls, getUserPolls },
-)(Polls)
+  mapStateToProps,
+  mapDispatchToProps,
+)(withSnack('polls', Polls))

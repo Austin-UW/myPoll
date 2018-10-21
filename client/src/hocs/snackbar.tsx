@@ -12,15 +12,19 @@ const mapDispatchToProps = {
 interface Props {
   openSnackbar: (message: string, variant: Variant) => void
   open: boolean
+  id?: string
 }
 /*
-*@type: HOC(secondary)
+*@ props: compType = component name, wrappedComponent = connected component, variant = default success
 */
 export const withSnack = (compType: string, WrappedComponent: any, variant?: Variant, message?: string) => {
   return connect(mapStateToProps, mapDispatchToProps)(class SnackbarHOCReturn extends React.Component<Props> {
     componentDidMount() {
-      if (!this.props.open) {
-        this.props.openSnackbar(compType + message || ' loaded successfully', variant || 'success')
+      if (!this.props.open && message) {
+        this.props.openSnackbar(compType + message, variant || 'success')
+      }
+      else {
+        this.props.openSnackbar(compType + ' loaded successfully', variant || 'success')
       }
     }
     render() { return (<WrappedComponent {...this.props} />) }

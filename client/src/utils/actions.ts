@@ -2,6 +2,12 @@ import { Variant, Action, Polls, Poll } from '../types'
 import { CreatePollState } from '../create-poll/create-poll'
 import { Dispatch } from 'redux'
 import { API } from './api'
+export const startLoading = (): Action => ({
+  type: 'START_LOADING'
+})
+export const stopLoading = (): Action => ({
+  type: 'STOP_LOADING'
+})
 export const closeSnackbar = (): Action => ({
   type: 'CLOSE_SNACKBAR'
 })
@@ -13,10 +19,14 @@ export const openSnackbar = (message: string, variant: Variant): Action => ({
 export const createPoll = (data: CreatePollState) => {
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
       const poll = await API.call('post', 'polls/polls', data)
       dispatch(setCurrentPoll(poll))
+      dispatch(openSnackbar('poll created successfully', 'success'))
       dispatch(removeError())
-    } catch (err) {
+      dispatch(stopLoading())
+    }
+    catch (err) {
       const { error } = err.response.data
       dispatch(addError(error))
     }
@@ -50,9 +60,12 @@ export const removeError = (): Action => {
 export const vote = (path: any, data: { answer: string }) => { // path is the poll id
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
       const poll = await API.call('post', `polls/do/${path}`, data)
       dispatch(setCurrentPoll(poll))
-    } catch (err) {
+      dispatch(stopLoading())
+    }
+    catch (err) {
       const { error } = err.response.data
       dispatch(addError(error))
     }
@@ -62,12 +75,23 @@ export const vote = (path: any, data: { answer: string }) => { // path is the po
 export const getCurrentPoll = (path: any) => {
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
+      console.log('loading started')
       const poll = await API.call('get', `polls/do/${path}`)
       dispatch(setCurrentPoll(poll))
       dispatch(removeError())
-    } catch (err) {
-      const { error } = err.response.data
-      dispatch(addError(error))
+      dispatch(stopLoading())
+    }
+    catch (err) {
+      if ('responce' in err) {
+        console.log('gert poll catch TRIGGERED')
+        dispatch(addError('oh no, thats A BIG ERROR' + err.responce.data))
+        dispatch(stopLoading())
+      }
+      else {
+        dispatch(addError('no error responce in getCurrentPoll catch'))
+        dispatch(stopLoading())
+      }
     }
   }
 }
@@ -80,20 +104,25 @@ export const logout = () => {
   return (dispatch: Dispatch) => {
     localStorage.clear()
     API.setToken(null)
+    dispatch(startLoading())
     dispatch(setCurrentUser({}))
     dispatch(removeError())
+    dispatch(stopLoading())
   }
 }
 
 export const authUser = (authType: 'login' | 'register', data: any) => {
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
       const { token, ...user } = await API.call('post', `auth/${authType}`, data)
       localStorage.setItem('jwtToken', token)
       API.setToken(token)
       dispatch(setCurrentUser(user))
       dispatch(removeError())
-    } catch (err) {
+      dispatch(stopLoading())
+    }
+    catch (err) {
       const { error } = err.response.data
       dispatch(addError(error))
     }
@@ -102,10 +131,13 @@ export const authUser = (authType: 'login' | 'register', data: any) => {
 export const getPolls = () => {
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
       const polls = await API.call('get', `polls/polls`)
       dispatch(setPolls(polls))
       dispatch(removeError())
-    } catch (err) {
+      dispatch(stopLoading())
+    }
+    catch (err) {
       const { error } = err.response.data
       console.log(error)
       dispatch(addError(error))
@@ -116,10 +148,12 @@ export const getPolls = () => {
 export const getUserPolls = () => {
   return async (dispatch: Dispatch) => {
     try {
+      dispatch(startLoading())
       const polls = await API.call('get', 'polls/user')
       console.log(polls)
       dispatch(setPolls(polls))
       dispatch(removeError())
+      dispatch(stopLoading())
     }
     catch (err) {
       console.log(err.responce.data)

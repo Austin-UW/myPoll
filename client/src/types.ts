@@ -6,7 +6,6 @@ export type Snackbar = {
   variant: Variant
 }
 export type Option = {
-  color?: any
   _id: any
   name: string
   votes: number
@@ -45,4 +44,6 @@ export type Action = Readonly<{ type: 'OPEN_SNACKBAR'; message: string; variant:
   | { type: 'SET_CURRENT_POLL', poll: Poll }
   | { type: 'ADD_ERROR', error: any }
   | { type: 'REMOVE_ERROR' }
-  | { type: 'SET_CURRENT_USER', user: any }>
+  | { type: 'SET_CURRENT_USER', user: any }
+  | { type: 'START_LOADING' }
+  | { type: 'STOP_LOADING' }>

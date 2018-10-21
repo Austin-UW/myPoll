@@ -45,7 +45,7 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
 
   render() {
     return (
-      <>
+      <div style={{ marginTop: 75 }}>
         <Header currentComponent="create-poll" />
         <form className="form" onSubmit={this.handleSubmit}>
           <label className="form-label" htmlFor="question">
@@ -78,7 +78,7 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
           </button>
           </div>
         </form>
-      </>
+      </div>
     )
   }
 }

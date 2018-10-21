@@ -49,7 +49,7 @@ class Auth extends Component<Props, State> {
     const { username, password } = this.state
     const { authType } = this.props
     return (
-      <div>
+      <div style={{ marginTop: 25 }}>
         <Header currentComponent={authType} />
         <form className="form" onSubmit={this.handleSubmit}>
           <label className="form-label" htmlFor="username">
