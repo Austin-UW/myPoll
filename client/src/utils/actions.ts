@@ -64,6 +64,7 @@ export const vote = (path: string, data: { answer: string }) => { // path is the
       const poll = await API.call('post', `polls/do/${path}`, data)
       dispatch(setCurrentPoll(poll))
       dispatch(stopLoading())
+      dispatch(openSnackbar('poll voted successfully', 'success'))
     }
     catch (err) {
       const { error } = err.response.data
@@ -126,10 +127,13 @@ export const authUser = (authType: 'login' | 'register', data: { username: strin
       dispatch(setCurrentUser(user))
       dispatch(removeError())
       dispatch(stopLoading())
+      dispatch(openSnackbar('logged in successfully', 'success'))
     }
     catch (err) {
       const { error } = err.response.data
       dispatch(addError(error))
+      dispatch(openSnackbar(error.message, 'error'))
+      dispatch(stopLoading())
     }
   }
 }

@@ -1,9 +1,10 @@
 import React, { Component, ChangeEvent, FormEvent } from 'react'
 import { connect } from 'react-redux'
-
 import { authUser, logout } from '../utils/actions'
-import { Header } from '../exports'
-import { Paper, Grid, TextField, Button, Theme, withStyles, WithStyles } from '@material-ui/core'
+import { Header, State } from '../exports'
+import {
+  Paper, Grid, TextField, Button, Theme, withStyles, WithStyles, CircularProgress
+} from '@material-ui/core'
 import { Fingerprint, Face } from '@material-ui/icons'
 
 const styles = (theme: Theme) => ({
@@ -19,14 +20,16 @@ const styles = (theme: Theme) => ({
 })
 
 interface Props extends WithStyles<typeof styles> {
+  isAuthenticated: boolean
+  isLoading: boolean
   authType: 'register' | 'login'
   authUser: (authType: 'login' | 'register', data: { username: string, password: string }) => void // change
 }
-interface State {
+interface PropsState {
   username: string
   password: string
 }
-class Auth extends Component<Props, State> {
+class Auth extends Component<Props, PropsState> {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -53,11 +56,11 @@ class Auth extends Component<Props, State> {
 
   render() {
     // const { password } = this.state
-    const { authType, classes } = this.props
+    const { authType, classes, isLoading, isAuthenticated } = this.props
     return (
       <div>
         <Header currentComponent={authType} />
-        <Paper className={classes.padding}>
+        {!isAuthenticated ? <Paper className={classes.padding}>
           <form onSubmit={this.handleSubmit} className={classes.margin}>
             <Grid container spacing={8} alignItems="flex-end">
               <Grid item>
@@ -90,16 +93,31 @@ class Auth extends Component<Props, State> {
                 color="secondary"
                 fullWidth
                 type="submit"
-                style={{ textTransform: 'none', marginTop: 10 }}
+                style={{
+                  textTransform: 'none', marginTop: 10,
+                  borderRadius: 0, paddingTop: 11, paddingBottom: 11
+                }}
               >
                 {authType}
               </Button>
             </Grid>
+            <Grid container justify="center" style={{ marginTop: '10px' }}>
+              {isLoading ? (
+                <CircularProgress size={50} />
+              ) : null}
+            </Grid>
           </form>
-        </Paper>
+        </Paper> : (
+            <div style={{ marginTop: 75 }}>
+              You are already logged in!
+          </div>
+          )}
       </div>
     )
   }
 }
-
-export const AuthRender = withStyles(styles)(connect(null, { authUser, logout })(Auth))
+const mapStateToProps = (state: State) => ({
+  isLoading: state.isLoading,
+  isAuthenticated: state.auth.isAuthenticated
+})
+export const AuthRender = withStyles(styles)(connect(mapStateToProps, { authUser, logout })(Auth))

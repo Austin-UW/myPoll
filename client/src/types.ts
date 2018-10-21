@@ -28,7 +28,7 @@ export type Poll = {
 // export type User = {}
 export type Polls = Poll[]
 
-export type State = Readonly<{
+export type State = {
   snackbar: Snackbar
   polls: Polls
   userPolls: Polls
@@ -41,7 +41,7 @@ export type State = Readonly<{
   error: {
     message: string | null
   }
-}>
+}
 // used in api.ts
 export type Action = Readonly<{ type: 'OPEN_SNACKBAR'; message: string; variant: Variant }
   | { type: 'CLOSE_SNACKBAR' }

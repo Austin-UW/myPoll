@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
-const primary = '#009688'
-const secondary = '#311b92'
+const primary = '#c2185b'
+const secondary = '#191970'
 /** @description Material ui theme, used in wrapper.tsx */
 export const theme = createMuiTheme({
   palette: {
