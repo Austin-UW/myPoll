@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { vote, deletePoll, getCurrentPoll } from '../utils/actions'
-import { Poll, State, Option } from '../types'
+import { Poll, State, Option, User } from '../types'
 import { Header, NoMatch, withSnack } from '../exports'
 import { Link } from 'react-router-dom'
 import { Pie } from 'react-chartjs-2'
@@ -18,10 +18,12 @@ type PollProps = {
   getCurrentPoll: (id: string) => void
   isLoading: boolean
   deletePoll: (id: string) => void
-  poll: Poll, vote: (id: string, data: { answer: string }) => void
-  auth: { isAuthenticated: boolean, user: { id: string, username: string, iat: number } | null }
+  poll: Poll,
+  vote: (id: string, data: { answer: string }) => void
+  auth: {
+    isAuthenticated: boolean, user: User
+  }
 }
-
 class PollComponent extends React.Component<PollProps> {
   componentWillMount() {
     this.props.getCurrentPoll(this.props.id)
@@ -48,6 +50,7 @@ class PollComponent extends React.Component<PollProps> {
         <div style={{ marginTop: 75, marginLeft: 20 }}>
           {/* like jazz */}
           <Header currentComponent="poll" />
+          {/*check if user._id exists*/}
           {auth.user ? poll.user._id === auth.user.id && (
             <Link to="/" onClick={() => this.props.deletePoll(poll._id)}>Delete</Link>
           ) : null}

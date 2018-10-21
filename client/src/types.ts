@@ -3,7 +3,7 @@ export type User = {
   iat: number
   id: string,
   username: string
-} | {}
+} | null
 export type Snackbar = {
   open: false
   message: string
@@ -34,7 +34,7 @@ export type State = Readonly<{
   userPolls: Polls
   auth: {
     isAuthenticated: boolean
-    user: { id: string, username: string, iat: number } | null
+    user: User
   }
   currentPoll: Poll | null
   isLoading: boolean

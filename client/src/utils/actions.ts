@@ -67,7 +67,11 @@ export const vote = (path: string, data: { answer: string }) => { // path is the
     }
     catch (err) {
       const { error } = err.response.data
+      console.log('error', error)
+      dispatch(startLoading())
       dispatch(addError(error))
+      dispatch(openSnackbar(error.message, 'error'))
+      dispatch(stopLoading())
     }
   }
 }
@@ -106,7 +110,7 @@ export const logout = () => {
     localStorage.clear()
     API.setToken(null)
     dispatch(startLoading())
-    dispatch(setCurrentUser({}))
+    dispatch(setCurrentUser(null))
     dispatch(removeError())
     dispatch(stopLoading())
   }

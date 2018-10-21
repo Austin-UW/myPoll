@@ -5,10 +5,11 @@
 /** @todo make an interface for todos and DONT manually enter names of keys, */
 const todos = {
   important: [
+    { where: 'everywhere', description: 'make custom theme', completed: false },
     {
       where: 'poll component voting when already voted',
       description: 'make it so if you have already voted it just shows error',
-      completed: false
+      completed: 'pretty good'
     },
     {
       where: 'login and register',
@@ -20,18 +21,16 @@ const todos = {
   indexFiles: [],
   packageJsonOrConfig: [],
   all: [
-    { description: 'make state and props always readonly' },
+    { description: 'make stuff that is readonly always readonly' },
     { description: 'DESTROY ALL ANYS REE', completed: '10%' },
     { description: 'make it have a margin at the top.', completed: 'meh' || true }
   ],
   header: [
-    { description: 'make it have an avator with letter', completed: false }
+    { description: 'make it have an avator with letter or just username', completed: false }
   ],
   noMatch: [],
   snackbarRoot: [],
-  auth: [
-    { description: 'make it material', completed: false }
-  ],
+  auth: [],
   createPoll: [
     { description: 'make you unable to create poll without a name and with empty options' },
     { description: 'make it material', completed: false }

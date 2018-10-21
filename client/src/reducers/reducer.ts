@@ -13,12 +13,22 @@ export const reducer = (state: State, action: Action) => {
         snackbar: { ...state.snackbar, open: false }
       }
     case 'SET_CURRENT_USER':
+      if (action.user) {
+        return {
+          ...state,
+          auth: {
+            ...state.auth,
+            isAuthenticated: !!Object.keys(action.user).length, // excuse me what the fuck?
+            user: action.user
+          }
+        }
+      }
       return {
         ...state,
         auth: {
           ...state.auth,
-          isAuthenticated: !!Object.keys(action.user).length, // excuse me what the fuck?
-          user: action.user
+          isAuthenticated: false,
+          user: action.user || null
         }
       }
     case 'ADD_ERROR':

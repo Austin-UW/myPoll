@@ -17,7 +17,7 @@ if (localStorage.jwtToken) {
   try {
     store.dispatch(setCurrentUser(decode(localStorage.jwtToken)))
   } catch (err) {
-    store.dispatch(setCurrentUser({}))
+    store.dispatch(setCurrentUser(null))
     store.dispatch(addError(err))
   }
 }

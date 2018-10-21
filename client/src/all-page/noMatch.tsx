@@ -21,4 +21,4 @@ const NoMatchComponent = () => (
   </div>
 )
 
-export const NoMatch = connect(null)(withSnack('404 :(', NoMatchComponent, 'error', ''))
+export const NoMatch = connect(null)(withSnack('404 :(', NoMatchComponent, 'error', ' '))

@@ -1,10 +1,24 @@
-import React, { Component, ChangeEvent } from 'react'
+import React, { Component, ChangeEvent, FormEvent } from 'react'
 import { connect } from 'react-redux'
 
 import { authUser, logout } from '../utils/actions'
 import { Header } from '../exports'
+import { Paper, Grid, TextField, Button, Theme, withStyles, WithStyles } from '@material-ui/core'
+import { Fingerprint, Face } from '@material-ui/icons'
 
-interface Props {
+const styles = (theme: Theme) => ({
+  margin: {
+    margin: theme.spacing.unit * 2,
+  },
+  padding: {
+    padding: theme.spacing.unit,
+    marginTop: 69,
+    width: '94%',
+    marginLeft: '3%'
+  }
+})
+
+interface Props extends WithStyles<typeof styles> {
   authType: 'register' | 'login'
   authUser: (authType: 'login' | 'register', data: { username: string, password: string }) => void // change
 }
@@ -19,70 +33,73 @@ class Auth extends Component<Props, State> {
       username: '',
       password: '',
     }
-
-    this.handleChange = this.handleChange.bind(this)
+    this.handlePassword = this.handlePassword.bind(this)
+    this.handleUsername = this.handleUsername.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
-
-  handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.name === 'username') {
-      this.setState({ username: e.target.value })
-
-    }
-    else if (e.target.name === 'password') {
-      this.setState({ password: e.target.value })
-    }
-    else {
-      console.log('auth/auth.tsx handleChange else statement reached so bad')
-    }
+  handlePassword(e: ChangeEvent<HTMLInputElement>) {
+    this.setState({ password: e.target.value })
+  }
+  handleUsername(e: ChangeEvent<HTMLInputElement>) {
+    this.setState({ username: e.target.value })
   }
 
-  handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
     const { username, password } = this.state
     const { authType } = this.props
-    e.preventDefault()
-    console.log(authType)
     this.props.authUser(authType, { username, password })
   }
 
   render() {
-    const { username, password } = this.state
-    const { authType } = this.props
+    // const { password } = this.state
+    const { authType, classes } = this.props
     return (
-      <div style={{ marginTop: 75 }}>
+      <div>
         <Header currentComponent={authType} />
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="username">
-            username
-          </label>
-          <input
-            type="text"
-            value={username}
-            name="username"
-            onChange={this.handleChange}
-            autoComplete="off"
-            className="form-input"
-          />
-          <label className="form-label" htmlFor="password">
-            password
-          </label>
-          <input
-            type="password"
-            value={password}
-            name="password"
-            onChange={this.handleChange}
-            autoComplete="off"
-            className="form-input"
-          />
-          <div className="buttons_center">
-            <button className="button" type="submit">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div >
+        <Paper className={classes.padding}>
+          <form onSubmit={this.handleSubmit} className={classes.margin}>
+            <Grid container spacing={8} alignItems="flex-end">
+              <Grid item>
+                <Face />
+              </Grid>
+              <Grid item md={true} sm={true} xs={true}>
+                <TextField
+                  autoComplete="current-username"
+                  onChange={this.handleUsername}
+                  label="Username" fullWidth autoFocus required
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={8} alignItems="flex-end">
+              <Grid item>
+                <Fingerprint />
+              </Grid>
+              <Grid item md={true} sm={true} xs={true}>
+                <TextField
+                  autoComplete="current-password"
+                  value={this.state.password}
+                  onChange={this.handlePassword}
+                  id="username" label="Password" fullWidth required type="password"
+                />
+              </Grid>
+            </Grid>
+            <Grid container justify="center" style={{ marginTop: '10px' }}>
+              <Button
+                variant="raised"
+                color="secondary"
+                fullWidth
+                type="submit"
+                style={{ textTransform: 'none', marginTop: 10 }}
+              >
+                {authType}
+              </Button>
+            </Grid>
+          </form>
+        </Paper>
+      </div>
     )
   }
 }
 
-export const AuthRender = connect(null, { authUser, logout })(Auth)
+export const AuthRender = withStyles(styles)(connect(null, { authUser, logout })(Auth))
