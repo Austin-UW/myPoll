@@ -7,8 +7,6 @@ const todos = {
   important: [],
   actions: [],
   reducer: [],
-  indexFiles: [],
-  packageJsonOrConfig: [],
   all: [
     { description: 'LOADING ICONS!', completed: '20%' }
   ],
@@ -23,18 +21,14 @@ const todos = {
     { description: 'make it material', completed: false }
   ],
   hocs: {
-    snackbarHOC: [],
-    loadingHOC: [
-      { description: 'create it', completed: false },
-      { description: 'make a megahoc?', completed: false || 'i dunno man' }
-    ]
+    snackbarHOC: []
   },
   home: [
     { description: 'make it material', completed: false },
     { description: 'give description of the app', completed: false }
   ],
   poll: [
-    { description: 'if they voted, display what they picked and clearly show they voted', completed: false }
+    { description: 'if they voted, display what they picked and clearly show they voted', completed: false },
     { description: 'make successfull voting show snackbar', completed: false },
     { description: 'make buttons material and alignment to center' },
     { description: 'make it clear it is their poll', completed: false },
