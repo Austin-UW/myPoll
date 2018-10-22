@@ -26,6 +26,7 @@ type Components = 'polls' | 'create-poll' | 'poll' | '404' | 'register' | 'login
  */
 
 interface Props extends WithStyles<typeof styles> {
+  username: string
   currentComponent: Components
   authenticated: boolean
   logout: () => void
@@ -61,6 +62,9 @@ class HeaderComp extends React.Component<Props> {
                 <Link
                   style={getStylesHeader(false)}
                   to="/" className={classes.link} onClick={this.props.logout}>Logout</Link>
+                <h2 className={classes.link}>
+                  Logged in as {this.props.username}
+                </h2>
               </>
             )}
           </Toolbar>
@@ -69,7 +73,14 @@ class HeaderComp extends React.Component<Props> {
     )
   }
 }
-const mapStateToProps = (state: State) => ({
-  authenticated: state.auth.isAuthenticated
-})
+const mapStateToProps = (state: State) => {
+  let usernameReturn = 'no username provided and default you messed up bud.'
+  if (state.auth.user !== null) {
+    usernameReturn = state.auth.user.username
+  }
+  return {
+    username: usernameReturn,
+    authenticated: state.auth.isAuthenticated
+  }
+}
 export const Header = connect(mapStateToProps, { logout })(withStyles(styles)(HeaderComp))

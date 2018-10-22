@@ -1,26 +1,58 @@
-import React, { Component, ChangeEvent, FormEvent } from 'react'
+import React, { ChangeEvent } from 'react'
 import { connect } from 'react-redux'
 import { createPoll } from '../utils/actions'
 import { Header } from '../exports'
-import { Button, TextField } from '@material-ui/core'
-interface Props {
-  createPoll: (data: CreatePollState) => void
-}
-export interface CreatePollState {
-  question: string,
-  options: string[]
+import {
+  Button, Theme, CssBaseline, Paper, Avatar,
+  Typography, FormControl, InputLabel, Input, WithStyles, withStyles
+} from '@material-ui/core'
+import LockIcon from '@material-ui/icons/LockOutlined'
+
+const styles = (theme: Theme) => ({
+  layout: {
+    width: 'auto',
+    display: 'block', // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3,
+  },
+})
+
+const initialState = {
+  question: '',
+  options: ['']
 }
 
-class CreatePollComponent extends Component<Props, CreatePollState> {
+interface Props extends WithStyles<typeof styles> {
+  createPoll: (data: typeof initialState) => void
+}
+
+class CreatePollComponent extends React.Component<Props, typeof initialState>{
   constructor(props: Props) {
     super(props)
-    this.state = {
-      question: '',
-      options: [''],
-    }
-
+    this.state = initialState
     this.handleChange = this.handleChange.bind(this)
-    this.addAnswer = this.addAnswer.bind(this)
     this.handleAnswer = this.handleAnswer.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -39,41 +71,53 @@ class CreatePollComponent extends Component<Props, CreatePollState> {
     this.setState({ options })
   }
 
-  handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  handleSubmit() {
     this.props.createPoll(this.state)
   }
-
   render() {
+    const { classes } = this.props
+    const { options } = this.state
     return (
       <div style={{ marginTop: 75 }}>
+        <CssBaseline />
         <Header currentComponent="create-poll" />
-        <form className="form" onSubmit={this.handleSubmit}>
-          <TextField
-            value={this.state.question}
-            onChange={this.handleChange}
-            required
-            label="Name"
-          />
-          {this.state.options.map((option: string, i) => (
-            <TextField
-              value={option}
-              key={i}
-              label="Option"
-              required
-              onChange={(e: ChangeEvent<HTMLInputElement>) => this.handleAnswer(e, i)}
-            />
-          ))}
-          <Button onClick={this.addAnswer}>
-            Add options
-          </Button>
-          <Button variant="contained" color="primary" type="submit">
-            Submit
-          </Button>
-        </form>
+        <main className={classes['layout']}>
+          <Paper style={{ flexDirection: 'column' }} className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <Typography component="h1">
+              Sign in
+            </Typography>
+            <form className={classes.form}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="name">Poll Name</InputLabel>
+                <Input required value={this.state.question} onChange={this.handleChange} autoFocus />
+              </FormControl>
+              {options.map((option: string, i: number) => (
+                <FormControl key={i} margin="normal" required fullWidth>
+                  <InputLabel htmlFor="option">{`Option ${i + 1}`}</InputLabel>
+                  <Input value={option} required
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => this.handleAnswer(e, i)}
+                  />
+                </FormControl>
+              ))}
+
+              <Button
+                onClick={this.handleSubmit}
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
+            </Button>
+            </form>
+          </Paper>
+        </main>
       </div>
     )
   }
 }
 
-export const CreatePoll = connect(null, { createPoll })(CreatePollComponent)
+export const CreatePoll = connect(null, { createPoll })(withStyles(styles)(CreatePollComponent))

@@ -4,20 +4,19 @@
 */
 /** @todo make an interface for todos and DONT manually enter names of keys, */
 const todos = {
-  important: [],
+  important: [
+    'make it so you can create a new option in create-poll'
+  ],
   actions: [],
   reducer: [],
   all: [
     { description: 'LOADING ICONS!', completed: '20%' }
   ],
-  header: [
-    { description: 'make it have an avator with letter or just username', completed: false }
-  ],
+  header: [],
   noMatch: [],
   snackbarRoot: [],
   auth: [],
   createPoll: [
-    { description: 'make you unable to create poll without a name and with empty options' },
     { description: 'make it material', completed: false }
   ],
   hocs: {

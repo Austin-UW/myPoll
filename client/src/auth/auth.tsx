@@ -68,7 +68,7 @@ class Auth extends Component<Props, PropsState> {
               </Grid>
               <Grid item md={true} sm={true} xs={true}>
                 <TextField
-                  autoComplete="current-username"
+                  autoComplete="on"
                   onChange={this.handleUsername}
                   label="Username" fullWidth autoFocus required
                 />

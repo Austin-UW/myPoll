@@ -1,5 +1,4 @@
 import { Variant, Action, Polls, Poll, User } from '../types'
-import { CreatePollState } from '../create-poll/create-poll'
 import { Dispatch } from 'redux'
 import { API } from './api'
 export const startLoading = (): Action => ({
@@ -16,7 +15,7 @@ export const openSnackbar = (message: string, variant: Variant): Action => ({
   type: 'OPEN_SNACKBAR', message, variant
 })
 
-export const createPoll = (data: CreatePollState) => {
+export const createPoll = (data: { question: string, options: string[] }) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading())
