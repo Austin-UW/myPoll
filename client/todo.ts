@@ -14,16 +14,10 @@ const todos = {
   auth: [],
   createPoll: [
   ],
-  hocs: {
-    snackbarHOC: []
-  },
+  snackbarHOC: [],
   home: [
-    { description: 'make it material', completed: false },
-    { description: 'give description of the app', completed: false }
+    { description: 'make it material', completed: false }
   ],
-  poll: [
-    { description: 'display what they voted', completed: false },
-    { description: 'make delete button not dissapear if not their poll but be disabled', completed: false }
-  ],
+  poll: [],
   pollList: []
 }
