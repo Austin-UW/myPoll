@@ -4,9 +4,9 @@ const host = 'http://localhost:1234/api'
 
 export const setToken = (token: number | null) => {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
   } else {
-    delete axios.defaults.headers.common['Authorization']
+    delete axios.defaults.headers.common.Authorization
   }
 }
 // any is accepted because we dont know what it will be
@@ -25,5 +25,5 @@ export const call = async (method: 'get' | 'post' | 'delete', path: string, data
     return response.data
   }
 }
-
+// accessed like API.setToken(token)
 export const API = { setToken, call }

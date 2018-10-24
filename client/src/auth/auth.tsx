@@ -102,9 +102,9 @@ class Auth extends Component<Props, PropsState> {
               </Button>
             </Grid>
             <Grid container justify="center" style={{ marginTop: '10px' }}>
-              {isLoading ? (
-                <CircularProgress size={50} />
-              ) : null}
+              {isLoading && (
+                <CircularProgress style={{ marginTop: 20 }} size={50} />
+              )}
             </Grid>
           </form>
         </Paper> : (

@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react'
 import { connect } from 'react-redux'
-import { createPoll } from '../utils/actions'
-import { Header } from '../exports'
+import { createPoll, openSnackbar } from '../utils/actions'
+import { Header, State } from '../exports'
 import {
   Button, Theme, CssBaseline, Paper, Avatar,
-  Typography, FormControl, InputLabel, Input, WithStyles, withStyles
+  Typography, FormControl, InputLabel, Input, WithStyles, withStyles, CircularProgress, Grid
 } from '@material-ui/core'
-import LockIcon from '@material-ui/icons/LockOutlined'
+import AddIcon from '@material-ui/icons/AddOutlined'
 
 const styles = (theme: Theme) => ({
   layout: {
@@ -45,16 +45,19 @@ const initialState = {
 }
 
 interface Props extends WithStyles<typeof styles> {
+  isLoading: boolean
   createPoll: (data: typeof initialState) => void
 }
+type TState = { question: string; options: string[] }
 
-class CreatePollComponent extends React.Component<Props, typeof initialState>{
+class CreatePollComponent extends React.Component<Props, TState> {
   constructor(props: Props) {
     super(props)
     this.state = initialState
     this.handleChange = this.handleChange.bind(this)
     this.handleAnswer = this.handleAnswer.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.addAnswer = this.addAnswer.bind(this)
   }
 
   handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -75,19 +78,19 @@ class CreatePollComponent extends React.Component<Props, typeof initialState>{
     this.props.createPoll(this.state)
   }
   render() {
-    const { classes } = this.props
+    const { classes, isLoading } = this.props
     const { options } = this.state
     return (
       <div style={{ marginTop: 75 }}>
         <CssBaseline />
         <Header currentComponent="create-poll" />
-        <main className={classes['layout']}>
+        <main className={classes.layout}>
           <Paper style={{ flexDirection: 'column' }} className={classes.paper}>
             <Avatar className={classes.avatar}>
-              <LockIcon />
+              <AddIcon />
             </Avatar>
             <Typography component="h1">
-              Sign in
+              Create Poll
             </Typography>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
@@ -102,7 +105,9 @@ class CreatePollComponent extends React.Component<Props, typeof initialState>{
                   />
                 </FormControl>
               ))}
-
+              <Button
+                onClick={this.addAnswer} fullWidth variant="contained" color="secondary"
+                className={classes.submit}>Add Option</Button>
               <Button
                 onClick={this.handleSubmit}
                 fullWidth
@@ -110,14 +115,25 @@ class CreatePollComponent extends React.Component<Props, typeof initialState>{
                 color="primary"
                 className={classes.submit}
               >
-                Sign in
+                Submit Poll
             </Button>
+              {isLoading && (
+                <Grid container direction="column" justify="center" alignItems="center">
+                  <CircularProgress className={classes.submit} size={50} />
+                </Grid>
+              )}
             </form>
           </Paper>
         </main>
-      </div>
+      </div >
     )
   }
 }
 
-export const CreatePoll = connect(null, { createPoll })(withStyles(styles)(CreatePollComponent))
+const mapStateToProps = (state: State) => ({
+  isLoading: state.isLoading
+})
+
+export const CreatePoll = connect(
+  mapStateToProps, { createPoll, openSnackbar }
+)(withStyles(styles)(CreatePollComponent))

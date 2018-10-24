@@ -18,7 +18,7 @@ export type Options = Option[]
 export type Poll = {
   _id: string
   question: string
-  votes: number
+  voted: string[]
   options: Options
   user: {
     _id: string,

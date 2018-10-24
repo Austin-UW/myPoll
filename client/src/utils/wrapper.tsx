@@ -10,7 +10,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import { setToken } from './api'
 import { setCurrentUser, addError } from './actions'
 import decode from 'jwt-decode'
-
 export const store = createStore(reducer, defaultState, composeWithDevTools(applyMiddleware(thunk)))
 if (localStorage.jwtToken) {
   setToken(localStorage.jwtToken)

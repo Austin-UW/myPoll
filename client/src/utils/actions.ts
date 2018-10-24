@@ -18,12 +18,29 @@ export const openSnackbar = (message: string, variant: Variant): Action => ({
 export const createPoll = (data: { question: string, options: string[] }) => {
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(startLoading())
-      const poll = await API.call('post', 'polls/polls', data)
-      dispatch(setCurrentPoll(poll))
-      dispatch(openSnackbar('poll created successfully', 'success'))
-      dispatch(removeError())
-      dispatch(stopLoading())
+      let optionsEmpty = true
+      const optionsNoNull = data.options.filter((option: string) => {
+        if (option === '' || ' ' || null || undefined) {
+          // what we don't want to happen
+          return true
+        }
+        optionsEmpty = false
+        return false
+      })
+      const questionNoSpaces = data.question.split('').filter((str: string) => {
+        return str !== ' '
+      }).join('')
+      if (questionNoSpaces !== '' && optionsNoNull.length > 0 && !optionsEmpty) {
+        dispatch(startLoading())
+        const poll = await API.call('post', 'polls/polls', { ...data, options: optionsNoNull })
+        dispatch(setCurrentPoll(poll))
+        dispatch(openSnackbar('poll created successfully', 'success'))
+        dispatch(removeError())
+        dispatch(stopLoading())
+      }
+      else {
+        dispatch(openSnackbar('Poll info not complete', 'error'))
+      }
     }
     catch (err) {
       const { error } = err.response.data
@@ -70,7 +87,10 @@ export const vote = (path: string, data: { answer: string }) => { // path is the
       console.log('error', error)
       dispatch(startLoading())
       dispatch(addError(error))
-      dispatch(openSnackbar(error.message, 'error'))
+      if (error.message.toLowerCase() === 'no token provided') {
+        dispatch(openSnackbar('not logged in/error authenticating', 'error'))
+      }
+      else { dispatch(openSnackbar(error.message, 'error')) }
       dispatch(stopLoading())
     }
   }

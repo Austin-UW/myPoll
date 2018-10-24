@@ -5,6 +5,7 @@ import { Poll, State, Option, User } from '../types'
 import { Header, NoMatch, withSnack } from '../exports'
 import { Link } from 'react-router-dom'
 import { Pie } from 'react-chartjs-2'
+import { Grid, CircularProgress, Button, Typography } from '@material-ui/core'
 
 const colors = [
   '#B388FF', '#9C27B0', '#3F51B5',
@@ -31,14 +32,18 @@ class PollComponent extends React.Component<PollProps> {
   render() {
     const { poll, auth, isLoading } = this.props
     if (poll && !isLoading) {
-      const answers = poll.options && poll.options.map((option) => (
-        <button
-          onClick={() => this.props.vote(poll._id, { answer: option.name })}
-          key={option._id}
-        >
-          {option.name}
-        </button>
-      ))
+      const answers = (
+        <Grid container justify="center" alignItems="center" style={{ marginTop: '10px' }}>
+          {poll.options && poll.options.map((option) => (
+            <Button
+              onClick={() => this.props.vote(poll._id, { answer: option.name })}
+              key={option._id} variant="outlined" style={{ borderRadius: '0px' }}
+            >
+              {option.name}
+            </Button>
+          ))}
+        </Grid>
+      )
       const data = {
         labels: [...poll.options.map((option: Option) => option.name)],
         datasets: [{
@@ -46,15 +51,41 @@ class PollComponent extends React.Component<PollProps> {
           backgroundColor: [...colors]
         }]
       }
+      const MyLink = (props: any) => (<Link to="/" {...props} />)
+      // const hasVoted: { voted: boolean, vote: Option | null } = { voted: false, vote: null }
+      let hasVoted = false
+      poll.voted.map((id: string) => {
+        if (auth.user !== null) {
+          if (id === auth.user.id) { hasVoted = true }
+        }
+      })
+      let isUsersPoll = false
+      if (auth.user && poll.user._id === auth.user.id) {
+        isUsersPoll = true
+      }
       return (
         <div style={{ marginTop: 75, marginLeft: 20 }}>
           {/* like jazz */}
           <Header currentComponent="poll" />
-          {/*check if user._id exists*/}
-          {auth.user ? poll.user._id === auth.user.id && (
-            <Link to="/" onClick={() => this.props.deletePoll(poll._id)}>Delete</Link>
-          ) : null}
-          <h3 className="poll-title">{poll.question}</h3>
+          <Grid container style={{ marginBottom: 5 }} justify="center">
+            {hasVoted ? (
+              <Typography component="h1" style={{ fontSize: 15 }}>You have voted already!</Typography>
+            ) : <Typography component="h1" style={{ fontSize: 15 }}>Not yet voted!</Typography>
+            }
+          </Grid>
+          <Grid container justify="center">
+            <Button
+              variant="raised" component={MyLink} onClick={() => this.props.deletePoll(poll._id)}
+              color="secondary" disabled={!isUsersPoll}
+            >
+              Delete Your Poll
+            </Button>
+          </Grid>
+          <Grid container justify="center">
+            <Typography component="h1" style={{ fontSize: 20 }}>
+              {poll.question}
+            </Typography>
+          </Grid>
           <div>{answers}</div>
           <div style={{ marginLeft: 20 }}>
             <Pie
@@ -71,7 +102,11 @@ class PollComponent extends React.Component<PollProps> {
       )
     }
     else {
-      return null
+      return (
+        <Grid container direction="column" justify="center" alignItems="center">
+          <CircularProgress style={{ marginTop: 90 }} size={50} />
+        </Grid>
+      )
     }
   }
 }
