@@ -31,6 +31,7 @@ interface Props extends WithStyles<typeof styles> {
   authenticated: boolean
   logout: () => void
 }
+// hi
 class HeaderComp extends React.Component<Props> {
   render() {
     const { classes, currentComponent, authenticated } = this.props
