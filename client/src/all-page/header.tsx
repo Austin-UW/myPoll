@@ -38,7 +38,7 @@ class HeaderComp extends React.Component<Props> {
     return (
       <div className={classes.root}>
         <AppBar color="primary">
-          <Toolbar>
+          <Toolbar variant="dense">
             <Link
               style={{ ...getStylesHeader(currentComponent === 'home') }}
               className={classes.link} to={'/'}>Home</Link>

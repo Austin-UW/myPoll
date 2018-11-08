@@ -25,7 +25,7 @@ export type Poll = {
     username: string
   }
 }
-// export type User = {}
+
 export type Polls = Poll[]
 
 export type State = {
