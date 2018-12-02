@@ -30,10 +30,11 @@ interface Props extends WithStyles<typeof styles> {
   closeSnackbar: () => void,
   variant: Variant
 }
-/*
-* Takes in a message, and returns a success snackbar with the message.
-* Also takes a variant from state containing which icon and background-color to use
-*/
+/**
+ * @param {TVariant} variant whether to show an error snackbar or success or warning or whatever
+ * Takes in a message, and returns a success snackbar with the message.
+ * Also takes a variant from state containing which icon and background-color to use
+ */
 
 class SnackbarWrapComponent extends React.Component<Props> {
   render() {
